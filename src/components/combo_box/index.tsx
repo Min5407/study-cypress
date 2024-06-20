@@ -1,20 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
-import { Check } from "lucide-react";
-
+import { useState } from "react";
+import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
-
 import PopOver from "../pop_over";
-import TriggerBtn from "./trigger_btn";
+import Command from "../command";
+import { Button } from "../ui/button";
 
 type Props<T extends readonly { label: string; value: string }[]> = {
   value: T[number]["value"];
@@ -31,43 +22,39 @@ export const ComboBox = <
   options,
 }: Props<T>) => {
   const [isShow, setIsShow] = useState(false);
+
   return (
     <PopOver
       TriggerElement={
-        <TriggerBtn>
+        <Button className="w-[200px] justify-between" variant="outline">
           {value
             ? options.find((item) => item.value === value)?.label
             : placeholder}
-        </TriggerBtn>
+          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+        </Button>
       }
       open={isShow}
       onOpenChange={setIsShow}
     >
       <Command>
-        <CommandInput placeholder="Search framework..." />
-        <CommandList>
-          <CommandEmpty>No framework found.</CommandEmpty>
-          <CommandGroup>
-            {options.map((item) => (
-              <CommandItem
-                key={item.value}
-                value={item.value}
-                onSelect={(currentValue) => {
-                  onChange(currentValue === value ? "" : currentValue);
-                  setIsShow(false);
-                }}
-              >
-                <Check
-                  className={cn(
-                    "mr-2 h-4 w-4",
-                    value === item.value ? "opacity-100" : "opacity-0"
-                  )}
-                />
-                {item.label}
-              </CommandItem>
-            ))}
-          </CommandGroup>
-        </CommandList>
+        {options.map((item) => (
+          <Command.Item
+            key={item.value}
+            value={item.value}
+            onSelect={(currentValue) => {
+              onChange(currentValue === value ? "" : currentValue);
+              setIsShow(false);
+            }}
+          >
+            <Check
+              className={cn(
+                "mr-2 h-4 w-4",
+                value === item.value ? "opacity-100" : "opacity-0"
+              )}
+            />
+            {item.label}
+          </Command.Item>
+        ))}
       </Command>
     </PopOver>
   );

@@ -1,10 +1,10 @@
-import { ComponentProps, ReactNode, useState } from "react";
+import { ComponentPropsWithRef, ReactNode } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 
 type Props = {
   TriggerElement: ReactNode;
   children: ReactNode;
-} & Omit<ComponentProps<typeof Popover>, "children">;
+} & Omit<ComponentPropsWithRef<typeof Popover>, "children">;
 const PopOver = ({ TriggerElement, children, ...props }: Props) => {
   return (
     <Popover {...props}>
