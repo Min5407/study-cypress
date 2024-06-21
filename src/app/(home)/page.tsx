@@ -41,7 +41,7 @@ export default function Home() {
     <div className="rounded-lg border bg-card text-card-foreground shadow-md">
       <div className="flex flex-col space-y-5 p-6">
         <h3 className="text-2xl font-semibold leading-none tracking-tight">
-          Login In
+          Log In
         </h3>
         <p className="text-sm text-muted-foreground">
           Log in to your account to continue
@@ -55,9 +55,9 @@ export default function Home() {
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input data-cy="email-input" {...field} />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage data-cy="email-error" />
                   </FormItem>
                 )}
                 name="email"
@@ -70,16 +70,16 @@ export default function Home() {
                   <FormItem>
                     <FormLabel>Name</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input data-cy="name-input" {...field} />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage data-cy="name-error" />
                   </FormItem>
                 )}
                 name="name"
                 control={form.control}
               />
             </div>
-            <Button type="submit" className="w-full mt-8">
+            <Button type="submit" data-cy="login-btn" className="w-full mt-8">
               submit
             </Button>
           </form>
