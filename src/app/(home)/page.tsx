@@ -1,54 +1,89 @@
 "use client";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Apple, CreditCard, DollarSign } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+
+const formSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  email: z.string().email("Must be a valid email"),
+});
+
+type FormSchemaType = z.infer<typeof formSchema>;
 
 export default function Home() {
+  const { push } = useRouter();
+
+  const form = useForm<FormSchemaType>({
+    defaultValues: {
+      name: "",
+      email: "",
+    },
+    mode: "onChange",
+    resolver: zodResolver(formSchema),
+  });
+
+  const onSubmit: SubmitHandler<FormSchemaType> = (data) => {
+    push("/overview");
+  };
+
   return (
     <div className="rounded-lg border bg-card text-card-foreground shadow-md">
       <div className="flex flex-col space-y-5 p-6">
         <h3 className="text-2xl font-semibold leading-none tracking-tight">
-          Payment Method
+          Login In
         </h3>
         <p className="text-sm text-muted-foreground">
-          Add a new payment method to your account.
+          Log in to your account to continue
         </p>
 
-        <RadioGroup
-          defaultValue="comfortable"
-          onValueChange={(e) => console.log(e)}
-          className="grid grid-cols-3 gap-4"
-        >
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="default" id="r1" className="sr-only" />
-            <label
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex flex-col items-center justify-between rounded-md border-2 border-muted bg-transparent p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&amp;:has([data-state=checked])]:border-primary"
-              htmlFor="r1"
-            >
-              <CreditCard size={36} className="mb-3 inline-block" />
-              Card
-            </label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="default" id="r1" className="sr-only" />
-            <label
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex flex-col items-center justify-between rounded-md border-2 border-muted bg-transparent p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&amp;:has([data-state=checked])]:border-primary"
-              htmlFor="r1"
-            >
-              <DollarSign size={36} className="mb-3 inline-block" />
-              Cash
-            </label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="default" id="r1" className="sr-only" />
-            <label
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex flex-col items-center justify-between rounded-md border-2 border-muted bg-transparent p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&amp;:has([data-state=checked])]:border-primary"
-              htmlFor="r1"
-            >
-              <Apple size={36} className="mb-3 inline-block" />
-              Apple
-            </label>
-          </div>
-        </RadioGroup>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <div className="my-4">
+              <FormField
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+                name="email"
+                control={form.control}
+              />
+            </div>
+            <div>
+              <FormField
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Name</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+                name="name"
+                control={form.control}
+              />
+            </div>
+            <Button type="submit" className="w-full mt-8">
+              submit
+            </Button>
+          </form>
+        </Form>
       </div>
     </div>
   );
