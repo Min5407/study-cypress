@@ -8,6 +8,7 @@ const Menu = () => {
         <li>
           <Link
             href="/"
+            data-cy="home-link"
             className="text-sm font-medium transition-colors hover:text-primary"
           >
             Home
@@ -16,6 +17,7 @@ const Menu = () => {
         <li>
           <Link
             href="/overview"
+            data-cy="overview-link"
             className="text-sm font-medium transition-colors hover:text-primary"
           >
             Overview
@@ -24,6 +26,7 @@ const Menu = () => {
         <li>
           <Link
             href="/about"
+            data-cy="about-link"
             className="text-sm font-medium transition-colors hover:text-primary"
           >
             About
